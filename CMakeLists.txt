@@ -87,3 +87,13 @@ add_custom_command(
   COMMENT "Creating symlink for compile_commands"
 )
 
+add_custom_command(
+  TARGET app POST_BUILD
+  COMMAND
+      ${CMAKE_COMMAND} -E create_symlink
+        "${CMAKE_SOURCE_DIR}/resources"
+        "${CMAKE_BINARY_DIR}/resources"
+  DEPENDS "${CMAKE_SOURCE_DIR}/resources"
+  COMMENT "Creating symlink for resources"
+)
+

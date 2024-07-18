@@ -212,7 +212,7 @@ bool Render::init(math::ivec2 windowSize, u32 scale)
   glDeleteShader(vs);
   glDeleteShader(fs);
 
-  texture = loadTexture("/Users/usama/Downloads/Sprite-0004.png");
+  texture = loadTexture("resources/Sprites.png");
 
   initDrawObjects();
 
