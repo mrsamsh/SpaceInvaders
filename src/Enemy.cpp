@@ -61,7 +61,6 @@ math::Rect Enemy::getBoundingBox() const
   }
 }
 
-#include <iostream>
 void EnemyFlock::spawn(math::vec2 position)
 {
   enemies.clear();
