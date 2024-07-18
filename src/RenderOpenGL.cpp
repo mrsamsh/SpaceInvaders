@@ -11,6 +11,8 @@
 #include <SDL2/SDL.h>
 #include <glad/glad.h>
 #include <stb/stb_image.h>
+#include <vector>
+#include <array>
 #include <iostream>
 
 namespace si
