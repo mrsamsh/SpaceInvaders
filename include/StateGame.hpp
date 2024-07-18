@@ -51,7 +51,7 @@ private:
   bool m_resetLevel = false;
   bool m_playerDown = false;
 
-  static constexpr f32 PlayerCooldownTime = 0.05;
+  static constexpr f32 PlayerCooldownTime = 0.35;
   static constexpr math::vec2 PlayerSpawnPosition{112, 174};
 };
 
