@@ -16,6 +16,7 @@
 #include "Enemy.hpp"
 #include "MysteryShip.hpp"
 #include "Sandbag.hpp"
+#include <array>
 
 namespace si
 {

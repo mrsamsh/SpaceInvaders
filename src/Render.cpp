@@ -151,4 +151,9 @@ void Render::sprite(math::vec2 pos, Color color, usz index)
   );
 }
 
+void Render::handleResize()
+{
+
+}
+
 } // namespace si

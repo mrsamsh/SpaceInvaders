@@ -15,6 +15,7 @@
 #include <vector>
 #include <deque>
 #include <concepts>
+#include <functional>
 
 namespace si
 {

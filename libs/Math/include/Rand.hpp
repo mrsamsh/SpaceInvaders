@@ -17,6 +17,7 @@
 #include <span>
 #include <ranges>
 #include <iostream>
+#include <algorithm>
 
 namespace math
 {
