@@ -133,7 +133,7 @@ static char const* fragShaderSource = R"(
 
 uniform sampler2D SpritesTexture;
 
-// int PixelSide = 4;
+// int PixelSide = 8;
 
 in vec4 Color;
 in vec2 TexCoords;
@@ -141,12 +141,13 @@ out vec4 FragColor;
 
 void main()
 {
+  // vec2 tt = gl_FragCoord.xy * 4;
   // vec2 modval = vec2(
-  //   mod(gl_FragCoord.x, PixelSide),
-  //   mod(gl_FragCoord.y, PixelSide)
+  //   mod(tt.x, PixelSide),
+  //   mod(tt.y, PixelSide)
   // );
 
-  // if (modval.x < 1 || modval.x > PixelSide - 1)
+  // if (modval.x < 3 || modval.x > PixelSide - 3)
   //   FragColor = texture(SpritesTexture, TexCoords) * Color * vec4(1.0, 1.0, 1.0, 0.4);
   // else
   // if (modval.y < 1 || modval.y > PixelSide - 1)
