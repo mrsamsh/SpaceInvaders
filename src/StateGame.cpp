@@ -94,6 +94,10 @@ void StateGame::draw() const
     Render::sprite({xx, 186}, transGreen, 25);
   }
   Render::drawText({xx + 20, 190}, Color::White, std::format("{}", m_rest));
+  if (m_playerCanShoot)
+    Render::fillRect({10, 10, 10, 10}, Color::Green);
+  else
+    Render::fillRect({10, 10, 10, 10}, Color::Red);
 }
 
 void StateGame::clearLevel()
@@ -154,10 +158,13 @@ void StateGame::updateActors(f32 const delta)
       m_enemies.shootBullet(m_bullets);
     }
 
-    if (Input::isKeyPressed(Key::Fire) && m_player.cooldown > PlayerCooldownTime)
+    if (Input::isKeyPressed(Key::Fire)
+        && m_player.cooldown > PlayerCooldownTime
+        && m_playerCanShoot)
     {
       m_bullets.add(m_player.position, Color::White, Bullet::Type::Player);
       m_player.cooldown = 0;
+      m_playerCanShoot = false;
     }
   }
 
@@ -166,7 +173,10 @@ void StateGame::updateActors(f32 const delta)
   auto bulletOutOfBounds = m_bullets.checkBounds(16, 176);
   for (auto& pos : bulletOutOfBounds)
   {
-    m_explosions.addExplosion(pos, ExplosionType::Bullet);
+    if (pos.x < 0)
+      m_playerCanShoot = true;
+    else
+      m_explosions.addExplosion(pos, ExplosionType::Bullet);
   }
 }
 
@@ -190,9 +200,15 @@ void StateGame::checkAndResolveCollision()
             ))
       {
         if (b.type == Bullet::Type::Player)
+        {
           b.alive = false;
+          m_playerCanShoot = true;
+        }
         if (b2.type == Bullet::Type::Player)
+        {
+          m_playerCanShoot = true;
           b2.alive = false;
+        }
         m_explosions.addExplosion(b.position, ExplosionType::Bullet);
       }
     }
@@ -201,6 +217,10 @@ void StateGame::checkAndResolveCollision()
     for (auto& s : m_sandbags)
     {
       if (math::Collision::check_intersection(b.getBoundingBox(), s.getBoundingBox()))
+      if (b.type == Bullet::Type::Player)
+      {
+        m_playerCanShoot = true;
+      }
         s.handleBulletCollision(b);
     }
 
@@ -224,6 +244,7 @@ void StateGame::checkAndResolveCollision()
       {
         m_explosions.addExplosion(m_mysteryShip.position, ExplosionType::SpaceShip);
         b.alive = false;
+        m_playerCanShoot = true;
         m_mysteryShip.alive = false;
         m_score += 100;
       }
@@ -234,6 +255,7 @@ void StateGame::checkAndResolveCollision()
         if (math::Collision::check_intersection(b.getBoundingBox(), e.getBoundingBox()))
         {
           b.alive = false;
+          m_playerCanShoot = true;
           e.alive = false;
           m_explosions.addExplosion(e.position, ExplosionType::SpaceShip);
           switch(e.type)

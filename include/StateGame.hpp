@@ -50,8 +50,9 @@ private:
   u32 m_scoreToRest = 1000;
   bool m_resetLevel = false;
   bool m_playerDown = false;
+  bool m_playerCanShoot = true;
 
-  static constexpr f32 PlayerCooldownTime = 0.35;
+  static constexpr f32 PlayerCooldownTime = 0.25;
   static constexpr math::vec2 PlayerSpawnPosition{112, 174};
 };
 
