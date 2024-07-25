@@ -10,6 +10,7 @@
 #include <SDL2/SDL_image.h>
 #include "Input.hpp"
 #include "Render.hpp"
+#include "SoundPlayer.hpp"
 
 namespace si
 {
@@ -20,11 +21,13 @@ bool Game::init()
   m_windowSize.y = 200;
   bool result = Render::init(m_windowSize, Scale);
   Input::init();
+  SoundPlayer::init();
   return result;
 }
 
 void Game::quit()
 {
+  SoundPlayer::quit();
   Render::quit();
 }
 
