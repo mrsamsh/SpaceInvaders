@@ -29,6 +29,7 @@ StateGame::StateGame(StateManager& manager)
 void StateGame::levelUp()
 {
   m_enemies.spawn(m_enemySpawnPosition);
+  setSoundSpeed();
   m_player.spawn(PlayerSpawnPosition);
   m_enemySpawnPosition.y += 8;
   m_mysteryShip.timer = 0;
@@ -37,10 +38,16 @@ void StateGame::levelUp()
   m_resetLevel = false;
 }
 
+void StateGame::setSoundSpeed()
+{
+  m_soundSpeed = std::log10((m_enemies.enemies.size() + 6) / 3);
+}
+
 void StateGame::init()
 {
   m_enemies.spawn(m_enemySpawnPosition);
   m_player.spawn(PlayerSpawnPosition);
+  setSoundSpeed();
 
   for (int i = 0; i < 4; ++i)
   {
@@ -128,6 +135,15 @@ void StateGame::updateActors(f32 const delta)
       // win state
       clearLevel();
     }
+    static f32 soundAccumulator = 0;
+    static i32 currentNote = 0;
+    soundAccumulator += delta;
+    if (soundAccumulator >= m_soundSpeed)
+    {
+      soundAccumulator = 0;
+      SoundPlayer::play(static_cast<SoundEffect>(currentNote));
+      currentNote = (currentNote + 1) % 4;
+    }
     m_bullets.update(delta);
 
     if (m_mysteryShip.timer > 10)
@@ -160,6 +176,7 @@ void StateGame::updateActors(f32 const delta)
     {
       m_bullets.add(m_player.position, Color::White, Bullet::Type::Player);
       m_player.cooldown = 0;
+      SoundPlayer::play(SoundEffect::Shoot1);
     }
   }
 
@@ -218,6 +235,7 @@ void StateGame::checkAndResolveCollision()
     {
       if(math::Collision::check_intersection(b.getBoundingBox(), m_player.getBoundingBox()))
       {
+        SoundPlayer::play(SoundEffect::Explosion2);
         b.alive = false;
         m_player.alive = false;
         m_playerDown = true;
@@ -245,6 +263,8 @@ void StateGame::checkAndResolveCollision()
           b.alive = false;
           e.alive = false;
           m_explosions.addExplosion(e.position, ExplosionType::SpaceShip);
+          SoundPlayer::play(SoundEffect::Explosion1);
+          setSoundSpeed();
           switch(e.type)
           {
           case Enemy::Type::Squid: {

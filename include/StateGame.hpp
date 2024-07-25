@@ -37,6 +37,7 @@ private:
   void spawnMysteryShip();
   void reviveOrGameOver();
   void gameOver();
+  void setSoundSpeed();
   Bullets m_bullets;
   Explosions m_explosions;
   Player m_player;
@@ -50,6 +51,7 @@ private:
   u32 m_scoreToRest = 1000;
   bool m_resetLevel = false;
   bool m_playerDown = false;
+  f32 m_soundSpeed;
 
   static constexpr f32 PlayerCooldownTime = 0.35;
   static constexpr math::vec2 PlayerSpawnPosition{112, 174};

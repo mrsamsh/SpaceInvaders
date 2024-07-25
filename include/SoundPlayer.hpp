@@ -16,14 +16,21 @@ namespace si
 
 enum class SoundEffect
 {
-  
+  Note1 = 0,
+  Note2,
+  Note3,
+  Note4,
+  Shoot1,
+  Explosion1,
+  Explosion2,
+  Count
 };
 
 class SoundPlayer
 {
 public:
   static void init();
-  static void playSoundEffect(SoundEffect effect);
+  static void play(SoundEffect effect);
   static void quit();
 };
 
