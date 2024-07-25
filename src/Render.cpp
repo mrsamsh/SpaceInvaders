@@ -115,13 +115,13 @@ void Render::drawText(math::vec2 pos, Color color, std::string_view text)
 {
   pos *= Scale;
   static constexpr f32 spacing = 7.f;
-  SDL_Rect src{0, 64, 6, 8};
-  SDL_FRect dst{pos.x, pos.y, 6.f * Scale, 8.f * Scale};
+  SDL_Rect src{0, 64, 8, 8};
+  SDL_FRect dst{pos.x, pos.y, 8.f * Scale, 8.f * Scale};
   priv::setDrawColor(color);
   for (char const& c : text)
   {
     auto i = static_cast<size_t>(c);
-    i32 x = (i % 16) * 6;
+    i32 x = (i % 16) * 8;
     i32 y = (i / 16) * 8;
     SDL_Rect currentSrc{src.x + x, src.y + y, src.w, src.h};
     SDL_RenderCopyF(

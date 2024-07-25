@@ -17,7 +17,13 @@
 
 namespace si
 {
-// variables
+
+// structs
+struct Vertex
+{
+  math::vec2 position;
+  math::vec2 texCoords;
+};
 
 struct VertexAttribs
 {
@@ -29,9 +35,11 @@ struct VertexAttribs
 struct RectAttribs
 {
   math::vec2 translation;
-  math::vec2 scale;
   Color color;
+  math::vec2 scale;
 };
+
+// variables
 
 static SDL_Window* window = nullptr;
 static GLuint program;
@@ -42,7 +50,6 @@ static GLuint vaoText,   vboText,    vboTextAttribs;
 static GLuint vaoRect,   vboRect,    vboRectAttribs;
 static constexpr usz MaxQuads = 2000;
 static math::vec4T<float> clearColor;
-static math::vec4T<float> drawColor;
 static std::vector<VertexAttribs> spriteAttribs;
 static std::vector<VertexAttribs> textAttribs;
 static std::vector<RectAttribs>   rectAttribs;
@@ -54,8 +61,8 @@ uniform mat4 projection;
 
 layout (location = 0) in vec2 aPosition;
 layout (location = 1) in vec2 aTranslation;
-layout (location = 2) in vec2 aScale;
-layout (location = 3) in vec4 aColor;
+layout (location = 2) in vec4 aColor;
+layout (location = 3) in vec2 aScale;
 
 out vec4 Color;
 
@@ -112,7 +119,7 @@ void main()
   else
   {
     GridSize = ivec2(16, 16);
-    SpriteSize = vec2(0.046875, 0.0625);
+    SpriteSize = vec2(1.0 / GridSize.x, 1.0 / GridSize.y);
   }
 
   int xx = int(aSpriteIndex) % GridSize.x;
@@ -228,6 +235,8 @@ bool Render::init(math::ivec2 windowSize, u32 scale)
 
 void Render::quit()
 {
+  glDeleteProgram(program);
+  glDeleteProgram(rectProgram);
   if (window)
   {
     SDL_DestroyWindow(window);
@@ -244,8 +253,8 @@ void Render::fillRect(math::Rect rect, Color color)
 {
   rectAttribs.push_back({
       rect.position,
-      rect.size,
-      color
+      color,
+      rect.size
       });
 }
 
@@ -377,12 +386,6 @@ GLuint loadProgram(GLuint vs, GLuint fs)
   return p;
 }
 
-struct Vertex
-{
-  math::vec2 position;
-  math::vec2 texCoords;
-};
-
 #define OFFSETOF(t, d) (void*)offsetof(t, d)
 
 void initDrawObjects()
@@ -400,12 +403,12 @@ void initDrawObjects()
   Vertex textVertices[]
   {
     // 8 * 6        0.0625 * 0.046875
-    {{ 0.f,  0.f}, {      0.f, 0.f    }},
-    {{ 6.f,  0.f}, {0.046875f, 0.f    }},
-    {{ 6.f,  8.f}, {0.046875f, 0.0625f}},
-    {{ 0.f,  0.f}, {      0.f, 0.f    }},
-    {{ 6.f,  8.f}, {0.046875f, 0.0625f}},
-    {{ 0.f,  8.f}, {      0.f, 0.0625f}}
+    {{ 0.f,  0.f}, {    0.f, 0.f    }},
+    {{ 8.f,  0.f}, {0.0625f, 0.f    }},
+    {{ 8.f,  8.f}, {0.0625f, 0.0625f}},
+    {{ 0.f,  0.f}, {    0.f, 0.f    }},
+    {{ 8.f,  8.f}, {0.0625f, 0.0625f}},
+    {{ 0.f,  8.f}, {    0.f, 0.0625f}}
   };
 
   float rectVertices[]
@@ -508,13 +511,13 @@ void initDrawObjects()
   glVertexAttribDivisor(1, 1);
 
   glEnableVertexAttribArray(2);
-  glVertexAttribPointer(2, 2, GL_FLOAT, false, sizeof(RectAttribs),
-      OFFSETOF(RectAttribs, scale));
+  glVertexAttribPointer(2, 4, GL_UNSIGNED_BYTE, true, sizeof(RectAttribs),
+      OFFSETOF(RectAttribs, color));
   glVertexAttribDivisor(2, 1);
 
   glEnableVertexAttribArray(3);
-  glVertexAttribPointer(3, 4, GL_UNSIGNED_BYTE, true, sizeof(RectAttribs),
-      OFFSETOF(RectAttribs, color));
+  glVertexAttribPointer(3, 2, GL_FLOAT, false, sizeof(RectAttribs),
+      OFFSETOF(RectAttribs, scale));
   glVertexAttribDivisor(3, 1);
 
   glBindVertexArray(0);
