@@ -2,8 +2,9 @@ cmake_minimum_required(VERSION 3.20)
 
 project(SpaceInvadors)
 
-find_package(SDL2 REQUIRED )
-find_package(SDL2_image REQUIRED )
+find_package(SDL2 REQUIRED)
+find_package(SDL2_image REQUIRED)
+find_package(SDL2_mixer REQUIRED)
 
 set(USE_OPENGL OFF CACHE BOOL "")
 
@@ -36,11 +37,13 @@ set(SourceFiles
   src/StateClear.cpp
   src/StateGameOver.cpp
   src/Input.cpp
+  src/SoundPlayer.cpp
 )
 
 set (Libraries 
   SDL2::SDL2
   SDL2_image
+  SDL2_mixer
   math
 )
 
