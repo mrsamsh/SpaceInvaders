@@ -55,8 +55,6 @@ std::vector<math::vec2> Bullets::checkBounds(f32 top, f32 bottom)
       {
         bullet.alive = false;
         result.push_back(bullet.position);
-        if (bullet.type == Bullet::Type::Player)
-          result.push_back({-10, 0});
       }
     });
   return result;
