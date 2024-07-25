@@ -402,7 +402,6 @@ void initDrawObjects()
 
   Vertex textVertices[]
   {
-    // 8 * 6        0.0625 * 0.046875
     {{ 0.f,  0.f}, {    0.f, 0.f    }},
     {{ 8.f,  0.f}, {0.0625f, 0.f    }},
     {{ 8.f,  8.f}, {0.0625f, 0.0625f}},
