@@ -70,7 +70,6 @@ void handleExplosion(std::vector<SandbagPiece>& pieces, int const x, int const y
       }
     }
   }
-  puts("");
 }
 
 void Sandbag::init(math::vec2 const position)
