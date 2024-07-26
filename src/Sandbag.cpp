@@ -32,18 +32,46 @@ static constexpr u8 Prototype[] = {
 };
 
 static constexpr u8 ExplosionPattern[] = {
-  0,0,1,1,1,0,0,
+  1,0,1,1,1,0,1,
+  0,1,1,1,1,1,0,
+  1,0,1,1,1,0,1,
   0,1,1,1,1,1,0,
   1,1,1,1,1,1,1,
   0,1,1,1,1,1,0,
-  1,1,1,1,1,1,1,
-  0,1,1,1,1,1,0,
-  0,0,1,1,1,0,0
+  1,0,1,1,1,0,1
 };
 
 static constexpr u8 Width = 30;
 static constexpr u8 Height = 14;
 static constexpr f32 Side = 1.f;
+
+static inline constexpr
+void handleExplosion(std::vector<SandbagPiece>& pieces, int const x, int const y, bool bottom)
+{
+  pieces[x + y * Width].alive = false;
+  int x_min = x - 3;
+  int x_max = x + 3;
+  int y_min = y;
+  int y_max = y + 6;
+  if (bottom)
+  {
+    y_min -= 6;
+    y_max -= 6;
+  }
+  for (int grid_y = y_min, py = 0; grid_y <= y_max; ++grid_y, ++py)
+  {
+    for (int grid_x = x_min, px = 0; grid_x <= x_max; ++grid_x, ++px)
+    {
+      if (grid_x < 0 || grid_x >= Width || grid_y < 0 || grid_y >= Height)
+        continue;
+      if (ExplosionPattern[px + py * 7] == 1)
+      {
+        pieces[grid_x + grid_y * Width].alive = false;
+      }
+    }
+  }
+  puts("");
+}
 
 void Sandbag::init(math::vec2 const position)
 {
@@ -90,7 +118,7 @@ bool Sandbag::handleBulletCollision(Bullet& b)
       {
         // collision occured
         b.alive = false;
-        piece.alive = false;
+        handleExplosion(pieces, x, y, b.type == Bullet::Type::Player);
         return true;
       }
     }
