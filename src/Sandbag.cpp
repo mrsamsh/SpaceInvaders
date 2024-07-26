@@ -77,10 +77,10 @@ math::Rect Sandbag::getBoundingBox() const
   return {position.x + 1, position.y, (Width * Side) - 2, Height * Side};
 }
 
-void Sandbag::handleBulletCollision(Bullet& b)
+bool Sandbag::handleBulletCollision(Bullet& b)
 {
   if (b.alive == false)
-    return;
+    return false;
   for (int y = 0; y < Height; ++y)
   {
     for (int x = 0; x < Width; ++x)
@@ -91,9 +91,11 @@ void Sandbag::handleBulletCollision(Bullet& b)
         // collision occured
         b.alive = false;
         piece.alive = false;
+        return true;
       }
     }
   }
+  return false;
 }
 
 void Sandbag::reset()

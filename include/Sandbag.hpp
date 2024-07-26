@@ -30,7 +30,7 @@ struct Sandbag
   std::vector<SandbagPiece> pieces;
   math::Rect getBoundingBox() const;
   void reset();
-  void handleBulletCollision(Bullet& b);
+  bool handleBulletCollision(Bullet& b);
   void draw() const;
   math::vec2 position;
 };

@@ -169,6 +169,7 @@ void StateGame::updateActors(f32 const delta)
     {
       m_enemies.cooldown = 0;
       m_enemies.shootBullet(m_bullets);
+      // SoundPlayer::play(SoundEffect::Shoot2);
     }
 
     if (Input::isKeyPressed(Key::Fire)
@@ -197,6 +198,8 @@ void StateGame::checkAndResolveCollision()
   for (int i = 0; i < m_bullets.bullets.size(); ++i)
   {
     Bullet& b = m_bullets.bullets[i];
+    if (b.alive != true)
+      continue;
 
     // Bullets with bullets
     for (int j = 0; j < m_bullets.bullets.size(); ++j)
@@ -224,10 +227,10 @@ void StateGame::checkAndResolveCollision()
     for (auto& s : m_sandbags)
     {
       if (math::Collision::check_intersection(b.getBoundingBox(), s.getBoundingBox()))
-      if (b.type == Bullet::Type::Player)
       {
+        if (s.handleBulletCollision(b))
+          m_explosions.addExplosion(b.position, ExplosionType::Bullet);
       }
-        s.handleBulletCollision(b);
     }
 
     // enemy bullets with player
