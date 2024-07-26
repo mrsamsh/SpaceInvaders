@@ -10,6 +10,7 @@
 #define SOUNDPLAYER_HPP_
 
 #include "MyTypes.hpp"
+#include "Enum.hpp"
 
 namespace si
 {
@@ -21,6 +22,7 @@ enum class SoundEffect
   Note3,
   Note4,
   Shoot1,
+  Shoot2,
   Explosion1,
   Explosion2,
   Count
@@ -30,7 +32,7 @@ class SoundPlayer
 {
 public:
   static void init();
-  static void play(SoundEffect effect);
+  static void play(Enum<SoundEffect> effect);
   static void quit();
 };
 
