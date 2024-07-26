@@ -14,6 +14,7 @@
 #include <vector>
 #include <array>
 #include <iostream>
+#include "GameContext.hpp"
 
 namespace si
 {
@@ -78,13 +79,28 @@ void main()
 static char const* fragRectSource = R"(
 #version 410 core
 
+uniform int PixelSide;
+uniform bool UseEffect;
+
 in vec4 Color;
 
 out vec4 FragColor;
 
 void main()
 {
-  FragColor = Color;
+  if (UseEffect)
+  {
+    vec2 tt = gl_FragCoord.xy;
+    vec2 modval = mod(tt, PixelSide);
+    if (modval.y < PixelSide - 0.9)
+      FragColor = Color;
+    else
+      discard;
+  }
+  else
+  {
+    FragColor = Color;
+  }
 }
 )";
 
@@ -139,8 +155,8 @@ static char const* fragShaderSource = R"(
 #version 410 core
 
 uniform sampler2D SpritesTexture;
-
-// int PixelSide = 8;
+uniform int PixelSide;
+uniform bool UseEffect;
 
 in vec4 Color;
 in vec2 TexCoords;
@@ -148,19 +164,20 @@ out vec4 FragColor;
 
 void main()
 {
-  // vec2 tt = gl_FragCoord.xy * 4;
-  // vec2 modval = vec2(
-  //   mod(tt.x, PixelSide),
-  //   mod(tt.y, PixelSide)
-  // );
+  if (UseEffect)
+  {
+    vec2 tt = gl_FragCoord.xy;
+    vec2 modval = mod(tt, PixelSide);
 
-  // if (modval.x < 3 || modval.x > PixelSide - 3)
-  //   FragColor = texture(SpritesTexture, TexCoords) * Color * vec4(1.0, 1.0, 1.0, 0.4);
-  // else
-  // if (modval.y < 1 || modval.y > PixelSide - 1)
-  //   FragColor = texture(SpritesTexture, TexCoords) * Color * vec4(1.0, 1.0, 1.0, 0.4);
-  // else
+    if (modval.y < PixelSide - 0.9)
+      FragColor = texture(SpritesTexture, TexCoords) * Color;
+    else
+      discard; //texture(SpritesTexture, TexCoords) * Color * vec4(1.0, 1.0, 1.0, 0.4);
+  }
+  else
+  {
     FragColor = texture(SpritesTexture, TexCoords) * Color;
+  }
 }
 )";
 
@@ -205,9 +222,10 @@ bool Render::init(math::ivec2 windowSize, u32 scale)
 
   program = loadProgram(vs, fs);
   glUseProgram(program);
-  auto projection = ortho(0, 240, 0, 200, -100, 100);
+  auto projection = ortho(0, GameContext::WindowSize.x, 0, GameContext::WindowSize.y, -100, 100);
   glUniformMatrix4fv(glGetUniformLocation(program, "projection"), 1, false,
       projection.data());
+  glUniform1i(glGetUniformLocation(program, "PixelSide"), 3);
 
   glDeleteShader(vs);
   glDeleteShader(fs);
@@ -218,6 +236,7 @@ bool Render::init(math::ivec2 windowSize, u32 scale)
   glUseProgram(rectProgram);
   glUniformMatrix4fv(glGetUniformLocation(rectProgram, "projection"), 1, false,
       projection.data());
+  glUniform1i(glGetUniformLocation(rectProgram, "PixelSide"), 3);
 
   glDeleteShader(vs);
   glDeleteShader(fs);
@@ -246,7 +265,7 @@ void Render::quit()
 
 void Render::drawRect(math::Rect rect, Color color)
 {
-
+  fillRect(rect, {color.r, color.g, color.b, 0xcc });
 }
 
 void Render::fillRect(math::Rect rect, Color color)
@@ -327,14 +346,15 @@ void Render::setClearColor(Color color)
 void Render::handleResize()
 {
   int width, height;
-  float ratio = 240.f / 200.f;
+  math::vec2 origSize = GameContext::WindowSize;
+  float ratio = origSize.x / origSize.y;
   SDL_GetWindowSize(window, &width, &height);
   int offsetx = 0, offsety = 0;
   float fwidth = float(width), fheight = float(height);
   if (fwidth / fheight < ratio)
   {
     int ww = width;
-    width = 240 * (width / 240);
+    width = GameContext::WindowSize.x * (width / GameContext::WindowSize.x);
     fheight = width / ratio;
     offsety = (height - fheight) / 2;
     offsetx = (ww - width) / 2;
@@ -343,13 +363,20 @@ void Render::handleResize()
   else
   {
     int hh = height;
-    height = 200 * (height / 200);
+    height = GameContext::WindowSize.y * (height / GameContext::WindowSize.y);
     fwidth = height * ratio;
     offsetx = (width - fwidth) / 2;
     offsety = (hh - height) / 2;
     width = fwidth;
   }
   // SDL_SetWindowSize(window, width, height);
+  f32 newScale = f32(width) / f32(GameContext::WindowSize.x);
+  i32 scale = static_cast<i32>(newScale);
+  printf("%d\n", scale);
+  glUseProgram(program);
+  glUniform1i(glGetUniformLocation(program, "PixelSide"), scale);
+  glUseProgram(rectProgram);
+  glUniform1i(glGetUniformLocation(rectProgram, "PixelSide"), scale);
   glViewport(offsetx, offsety, width, height);
 }
 

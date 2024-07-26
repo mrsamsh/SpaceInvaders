@@ -12,12 +12,16 @@
 #include "Input.hpp"
 #include "Render.hpp"
 #include "SoundPlayer.hpp"
+#include "GameContext.hpp"
 #include <format>
 
 using math::vec2;
 
 namespace si
 {
+
+math::vec2 StateGame::PlayerSpawnPosition(GameContext::WindowSize.x / 2.f - 8, GameContext::WindowSize.y - 26);
+f32 StateGame::PlayerCooldownTime = 0.35f;
 
 StateGame::StateGame(StateManager& manager)
 : State(manager, StateID::Game)
@@ -51,10 +55,10 @@ void StateGame::init()
 
   for (int i = 0; i < 4; ++i)
   {
-    auto init_x = 24.f;
+    auto init_x = GameContext::WindowSize.x / 10.f;
     auto s_width = 30.f;
-    auto y = 152.f;
-    auto offset = (240.f - (init_x * 2.f + s_width)) / 3.f;
+    auto y = GameContext::WindowSize.y - 48.f;
+    auto offset = (GameContext::WindowSize.x - (init_x * 2.f + s_width)) / 3.f;
     m_sandbags[i].init(vec2{init_x + offset * i, y});
   }
   m_enemySpawnPosition.y += 8;
@@ -90,18 +94,18 @@ void StateGame::draw() const
   m_mysteryShip.draw();
 
   // HUD
-  Render::fillRect({0, 0, 240, 12}, Color::Black);
-  Render::fillRect({0, 188, 240, 12}, Color::Black);
-  Render::drawText({26, 3}, Color::White,
+  Render::fillRect({0, 0, GameContext::WindowSize.x, 12}, Color::Black);
+  Render::fillRect({0, GameContext::WindowSize.y - 12, GameContext::WindowSize.x, 12}, Color::Black);
+  Render::drawText({(GameContext::WindowSize.x - 189.f) / 2, 3}, Color::White,
       std::format("SCORE {:05}        LEVEL {:02}", m_score, m_level));
   f32 xx;
   for (int i = 0; i < m_rest; ++i)
   {
     static Color transGreen(0x557d55ff);
     xx = 6 + i * 16;
-    Render::sprite({xx, 186}, transGreen, 25);
+    Render::sprite({xx, GameContext::WindowSize.y - 14}, transGreen, 25);
   }
-  Render::drawText({xx + 20, 190}, Color::White, std::format("{}", m_rest));
+  Render::drawText({xx + 20, GameContext::WindowSize.y - 10}, Color::White, std::format("{}", m_rest));
 }
 
 void StateGame::clearLevel()
@@ -151,6 +155,7 @@ void StateGame::updateActors(f32 const delta)
       if (math::rng::generate<int>(1, 6) == 3)
       {
         spawnMysteryShip();
+        SoundPlayer::play(SoundEffect::Mystery, 5);
       }
       else
       {
@@ -159,7 +164,7 @@ void StateGame::updateActors(f32 const delta)
     }
 
     m_mysteryShip.update(delta);
-    if (m_mysteryShip.position.x < -16 || m_mysteryShip.position.x > 240)
+    if (m_mysteryShip.position.x < -16 || m_mysteryShip.position.x > GameContext::WindowSize.x)
     {
       m_mysteryShip.alive = false;
     }
@@ -183,7 +188,7 @@ void StateGame::updateActors(f32 const delta)
 
   m_explosions.update(delta);
 
-  auto bulletOutOfBounds = m_bullets.checkBounds(16, 176);
+  auto bulletOutOfBounds = m_bullets.checkBounds(12, GameContext::WindowSize.y - 24);
   for (auto& pos : bulletOutOfBounds)
   {
     m_explosions.addExplosion(pos, ExplosionType::Bullet);
@@ -255,7 +260,9 @@ void StateGame::checkAndResolveCollision()
         m_explosions.addExplosion(m_mysteryShip.position, ExplosionType::SpaceShip);
         b.alive = false;
         m_mysteryShip.alive = false;
-        m_score += 100;
+        m_score += (math::rng::generate(0, 4) + 6) * 10;
+        SoundPlayer::stop(SoundChannel::Mystery);
+        SoundPlayer::play(SoundEffect::Explosion1);
       }
 
       // m_player bullets with m_enemies
@@ -281,7 +288,6 @@ void StateGame::checkAndResolveCollision()
           } break;
           }
         }
-
       }
     }
   }
@@ -302,10 +308,10 @@ void StateGame::reviveOrGameOver()
 {
   if (--m_rest == 0)
   {
-    if (Game::HighScore < m_score)
+    if (GameContext::HighScore < m_score)
     {
-      Game::HighScore = m_score;
-      Game::NewHighScore = true;
+      GameContext::HighScore = m_score;
+      GameContext::NewHighScore = true;
     }
     return gameOver();
   }

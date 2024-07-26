@@ -8,7 +8,7 @@
 
 #include "Enemy.hpp"
 #include "Render.hpp"
-#include "Game.hpp"
+#include "GameContext.hpp"
 #include "Rand.hpp"
 #include <iostream>
 
@@ -64,7 +64,7 @@ math::Rect Enemy::getBoundingBox() const
 void EnemyFlock::spawn(math::vec2 position)
 {
   enemies.clear();
-  f32 offset = 16.f;
+  math::vec2 offset {16.f, 13.f};
   for (int row = 4; row >= 0; --row)
   {
     for (int col = 0; col < 11; ++col)
@@ -73,7 +73,7 @@ void EnemyFlock::spawn(math::vec2 position)
       if (row == 0)                  type = Enemy::Type::Squid;
       else if (row == 1 || row == 2) type = Enemy::Type::Fly;
       else                           type = Enemy::Type::Octopus;
-      enemies.push_back({position + math::vec2{col * offset, row * offset}, type});
+      enemies.push_back({position + math::vec2{col * offset.x, row * offset.y}, type});
     }
   }
   current_update = 0;
@@ -84,7 +84,7 @@ void EnemyFlock::update(f32 const delta)
   cooldown += delta;
   static f32 accumulator = 0;
   accumulator += delta;
-  if (accumulator < Game::Delta)
+  if (accumulator < GameContext::Delta)
   {
     return;
   }
@@ -92,7 +92,7 @@ void EnemyFlock::update(f32 const delta)
   eraseDead();
   auto& e = enemies[current_update++];
   e.update(delta);
-  if (e.position.x < 10 || e.position.x > 212)
+  if (e.position.x < 10 || e.position.x > GameContext::WindowSize.x - 28)
   {
     changeDir = true;
   }
@@ -126,10 +126,6 @@ void EnemyFlock::eraseDead()
 void EnemyFlock::draw() const
 {
   std::for_each(enemies.begin(), enemies.end(), std::mem_fn(&Enemy::draw));
-  // for (auto const& e : enemies)
-  // {
-  //   e.draw();
-  // }
 }
 
 std::vector<math::vec2> EnemyFlock::getBottomRowPositions()

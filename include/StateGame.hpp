@@ -53,8 +53,8 @@ private:
   bool m_playerDown = false;
   f32 m_soundSpeed;
 
-  static constexpr f32 PlayerCooldownTime = 0.35;
-  static constexpr math::vec2 PlayerSpawnPosition{112, 174};
+  static f32 PlayerCooldownTime;
+  static math::vec2 PlayerSpawnPosition;
 };
 
 } // namespace si

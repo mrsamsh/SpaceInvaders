@@ -19,9 +19,7 @@
 namespace si
 {
 
-u32 frames = 0;
-u32 Game::HighScore = 0;
-bool Game::NewHighScore = false;
+static u32 frames = 0;
 
 void Game::run()
 {

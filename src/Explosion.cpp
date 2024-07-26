@@ -8,7 +8,7 @@
 
 #include "Explosion.hpp"
 #include "Render.hpp"
-#include "Game.hpp"
+#include "GameContext.hpp"
 
 namespace si
 {
@@ -17,7 +17,7 @@ void Explosion::update(f32 const delta)
 {
   static f32 accumulator = 0;
   accumulator += delta;
-  if (accumulator < Game::Delta)
+  if (accumulator < GameContext::Delta)
     return;
   accumulator = 0;
   switch(type)

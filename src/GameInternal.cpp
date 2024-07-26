@@ -11,15 +11,14 @@
 #include "Input.hpp"
 #include "Render.hpp"
 #include "SoundPlayer.hpp"
+#include "GameContext.hpp"
 
 namespace si
 {
 
 bool Game::init()
 {
-  m_windowSize.x = 240;
-  m_windowSize.y = 200;
-  bool result = Render::init(m_windowSize, Scale);
+  bool result = Render::init(GameContext::WindowSize, Scale);
   Input::init();
   SoundPlayer::init();
   return result;

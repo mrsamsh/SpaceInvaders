@@ -35,16 +35,11 @@ private:
 private:
   void handleResize();
 
-  math::ivec2 m_windowSize;
   StateManager m_stateManager;
   bool m_running;
   bool m_renderFPS = false;
   bool m_resized = false;
 
-public:
-  static constexpr f32 Delta = 1.f / 60.f;
-  static u32 HighScore;
-  static bool NewHighScore;
 private:
   static constexpr u32 Scale = 3;
 };

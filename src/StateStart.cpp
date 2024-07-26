@@ -7,9 +7,9 @@
 //
 
 #include "StateStart.hpp"
-#include "Game.hpp"
 #include "Input.hpp"
 #include "Render.hpp"
+#include "StateManager.hpp"
 #include <iostream>
 
 namespace si
@@ -34,21 +34,21 @@ bool StateStart::update(f32 const delta)
 
 void StateStart::draw() const
 {
-  Render::drawText({70.50, 33.50}, Color::Blue, "SPACE INVADERS");
-  Render::drawText({71, 34}, Color::White, "SPACE INVADERS");
+  Render::drawText({70.50, 29.50}, Color::Blue, "SPACE INVADERS");
+  Render::drawText({71, 30}, Color::White, "SPACE INVADERS");
 
-  Render::sprite({70, 66}, Color::Red, 24);
-  Render::drawText({94, 70}, Color::White, "= ?? POINTS");
-  Render::sprite({70, 80}, Color::White, 0);
-  Render::drawText({94, 84}, Color::White, "= 30 POINTS");
-  Render::sprite({70, 94}, Color::Yellow, 8);
-  Render::drawText({94, 98}, Color::White, "= 20 POINTS");
-  Render::sprite({70, 108}, Color::Blue, 16);
-  Render::drawText({94, 112}, Color::White, "= 10 POINTS");
-  Render::drawText({64, 134}, Color::White, "PRESS J TO START");
-  Render::drawText({67, 154}, Color::White, "A AND D TO MOVE");
-  Render::drawText({67, 164}, Color::White, "  J TO SHOOT   ");
-  Render::drawText({28, 184}, Color::Yellow, "programmed by usama alshughry");
+  Render::sprite({70, 49}, Color::Red, 24);
+  Render::drawText({94, 54}, Color::White, "= ?? POINTS");
+  Render::sprite({70, 64}, Color::White, 0);
+  Render::drawText({94, 68}, Color::White, "= 30 POINTS");
+  Render::sprite({70, 78}, Color::Yellow, 8);
+  Render::drawText({94, 82}, Color::White, "= 20 POINTS");
+  Render::sprite({70, 92}, Color::Blue, 16);
+  Render::drawText({94, 96}, Color::White, "= 10 POINTS");
+  Render::drawText({64, 118}, Color::White, "PRESS J TO START");
+  Render::drawText({67, 138}, Color::White, "A AND D TO MOVE");
+  Render::drawText({67, 148}, Color::White, "  J TO SHOOT   ");
+  Render::drawText({28, 164}, Color::Yellow, "programmed by usama alshughry");
 }
 
 } // namespace si

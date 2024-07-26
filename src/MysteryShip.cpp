@@ -7,6 +7,7 @@
 //
 
 #include "MysteryShip.hpp"
+#include "GameContext.hpp"
 #include "Render.hpp"
 
 namespace si
@@ -28,7 +29,7 @@ void MysteryShip::spawn(MysteryShip::Direction direction)
   } break;
   case Direction::ToRight:
   {
-    position.x = 240;
+    position.x = GameContext::WindowSize.x;
     velocity.x = -1;
   } break;
   }

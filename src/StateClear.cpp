@@ -8,7 +8,7 @@
 
 #include "StateClear.hpp"
 #include "StateManager.hpp"
-#include "Game.hpp"
+#include "GameContext.hpp"
 #include "Render.hpp"
 
 namespace si
@@ -32,8 +32,8 @@ bool StateClear::update(f32 const delta)
 
 void StateClear::draw() const
 {
-  Render::fillRect({44, 68, 152, 64}, 0x00000099);
-  Render::drawText({82, 94}, Color::White, "LEVEL CLEAR");
+  Render::fillRect({44, 68, GameContext::WindowSize.x - 88, GameContext::WindowSize.y - 136}, 0x00000099);
+  Render::drawText({GameContext::WindowSize.x / 2.f - 77 / 2.f, GameContext::WindowSize.y / 2.f - 4}, Color::White, "LEVEL CLEAR");
 }
 
 } // namespace si

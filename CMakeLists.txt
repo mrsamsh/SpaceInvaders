@@ -25,6 +25,7 @@ set(SourceFiles
   src/Color.cpp
   src/Clock.cpp
   src/GameInternal.cpp
+  src/GameContext.cpp
   src/Player.cpp
   src/Enemy.cpp
   src/Bullets.cpp

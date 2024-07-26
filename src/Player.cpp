@@ -7,14 +7,14 @@
 //
 
 #include "Player.hpp"
-#include "Game.hpp"
+#include "GameContext.hpp"
 #include "Render.hpp"
 
 namespace si
 {
 
 Player::Player()
-: Entity{{112, 180}, math::vec2{}, 25, Color::Green}
+: Entity{{GameContext::WindowSize.x / 2.f - 8, 180}, math::vec2{}, 25, Color::Green}
 , alive{true}
 { }
 
@@ -29,14 +29,14 @@ void Player::update(f32 const delta)
   if (alive)
   {
     position += velocity * 80.f * delta;
-    position.x = math::clamp(position.x, 2.f, 222.f);
+    position.x = math::clamp(position.x, 2.f, GameContext::WindowSize.x - 18.f);
   }
   else
   {
     static u32 counter = 0;
     static f32 accumulator = 0.f;
     accumulator += delta;
-    if (accumulator >= Game::Delta)
+    if (accumulator >= GameContext::Delta)
     {
       counter++;
       accumulator = 0;
