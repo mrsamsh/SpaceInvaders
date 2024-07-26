@@ -25,6 +25,16 @@ enum class SoundEffect
   Shoot2,
   Explosion1,
   Explosion2,
+  Mystery,
+  Count
+};
+
+enum class SoundChannel
+{
+  Music,
+  Bullets,
+  Explosions,
+  Mystery,
   Count
 };
 
@@ -32,7 +42,9 @@ class SoundPlayer
 {
 public:
   static void init();
-  static void play(Enum<SoundEffect> effect);
+  static void play(Enum<SoundEffect> effect, i32 repeat = 0);
+  static void setVolume(Enum<SoundChannel> channel, i32 volume);
+  static void stop(Enum<SoundChannel> channel);
   static void quit();
 };
 
