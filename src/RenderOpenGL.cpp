@@ -92,7 +92,7 @@ void main()
   {
     vec2 tt = gl_FragCoord.xy;
     vec2 modval = mod(tt, PixelSide);
-    if (modval.y < PixelSide - 0.9)
+    if (modval.y < PixelSide - 0.9 && modval.x < PixelSide - 0.9)
       FragColor = Color;
     else
       discard;
@@ -120,20 +120,22 @@ out vec4 Color;
 
 void main()
 {
-  vec2 translatedPosition = vec2(
-    floor(aTranslation.x + aPosition.x),
-    floor(aTranslation.y + aPosition.y)
-  );
-
   ivec2 GridSize;
   vec2 SpriteSize;
+  vec2 translatedPosition;
   if (aSpriteIndex < 100)
   {
+    translatedPosition = vec2(
+      floor(aTranslation.x + aPosition.x),
+      floor(aTranslation.y + aPosition.y)
+    );
+
     GridSize = ivec2(8, 8);
     SpriteSize = vec2(1.0 / GridSize.x, 1.0 / GridSize.y);
   }
   else
   {
+    translatedPosition = aTranslation + aPosition;
     GridSize = ivec2(16, 16);
     SpriteSize = vec2(1.0 / GridSize.x, 1.0 / GridSize.y);
   }
@@ -169,10 +171,10 @@ void main()
     vec2 tt = gl_FragCoord.xy;
     vec2 modval = mod(tt, PixelSide);
 
-    if (modval.y < PixelSide - 0.9)
+    if (modval.y < PixelSide - 0.9 && modval.x < PixelSide - 0.9)
       FragColor = texture(SpritesTexture, TexCoords) * Color;
     else
-      discard; //texture(SpritesTexture, TexCoords) * Color * vec4(1.0, 1.0, 1.0, 0.4);
+      discard;
   }
   else
   {
@@ -240,6 +242,13 @@ bool Render::init(math::ivec2 windowSize, u32 scale)
 
   glDeleteShader(vs);
   glDeleteShader(fs);
+
+#ifdef USE_EFFECT
+  glUseProgram(program);
+  glUniform1i(glGetUniformLocation(program, "UseEffect"), true);
+  glUseProgram(rectProgram);
+  glUniform1i(glGetUniformLocation(rectProgram, "UseEffect"), true);
+#endif
 
   texture = loadTexture("resources/Sprites.png");
 
@@ -372,7 +381,6 @@ void Render::handleResize()
   // SDL_SetWindowSize(window, width, height);
   f32 newScale = f32(width) / f32(GameContext::WindowSize.x);
   i32 scale = static_cast<i32>(newScale);
-  printf("%d\n", scale);
   glUseProgram(program);
   glUniform1i(glGetUniformLocation(program, "PixelSide"), scale);
   glUseProgram(rectProgram);

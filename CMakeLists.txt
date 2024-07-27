@@ -7,6 +7,7 @@ find_package(SDL2_image REQUIRED)
 find_package(SDL2_mixer REQUIRED)
 
 set(USE_OPENGL OFF CACHE BOOL "")
+set(USE_OPENGL_FX OFF CACHE BOOL "")
 
 add_subdirectory(${CMAKE_SOURCE_DIR}/libs/Math)
 
@@ -62,6 +63,13 @@ endif()
 add_executable(app
   ${SourceFiles}
 )
+
+if (USE_OPENGL AND USE_OPENGL_FX)
+  target_compile_definitions(app
+    PRIVATE
+      USE_EFFECT
+    )
+endif()
 
 target_link_libraries(app
   PRIVATE

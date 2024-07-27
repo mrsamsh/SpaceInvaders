@@ -94,9 +94,9 @@ void StateGame::draw() const
   m_mysteryShip.draw();
 
   // HUD
-  Render::fillRect({0, 0, GameContext::WindowSize.x, 12}, Color::Black);
-  Render::fillRect({0, GameContext::WindowSize.y - 12, GameContext::WindowSize.x, 12}, Color::Black);
-  Render::drawText({(GameContext::WindowSize.x - 189.f) / 2, 3}, Color::White,
+  Render::fillRect({0, 0, GameContext::WindowSize.x, 12}, Color::Grey);
+  Render::fillRect({0, GameContext::WindowSize.y - 12, GameContext::WindowSize.x, 12}, Color::Grey);
+  Render::drawText({floor((GameContext::WindowSize.x - 189.f) / 2), 3}, Color::White,
       std::format("SCORE {:05}        LEVEL {:02}", m_score, m_level));
   f32 xx;
   for (int i = 0; i < m_rest; ++i)
@@ -138,6 +138,7 @@ void StateGame::updateActors(f32 const delta)
     {
       // win state
       clearLevel();
+      SoundPlayer::stop(SoundChannel::Mystery);
     }
     static f32 soundAccumulator = 0;
     static i32 currentNote = 0;

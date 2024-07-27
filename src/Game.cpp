@@ -33,7 +33,7 @@ void Game::run()
   m_running = init();
   f32 lastTime, thisTime, elapsed = 0, accumulator = 0, currentFrames = 0;
 
-  Render::setClearColor(Color::Grey);
+  Render::setClearColor(Color::Black);
 
   lastTime = Clock::Now();
 
