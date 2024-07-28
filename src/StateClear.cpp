@@ -33,7 +33,7 @@ bool StateClear::update(f32 const delta)
 void StateClear::draw() const
 {
   Render::fillRect({44, 68, GameContext::WindowSize.x - 88, GameContext::WindowSize.y - 136}, 0x00000099);
-  Render::drawText({GameContext::WindowSize.x / 2.f - 77 / 2.f, GameContext::WindowSize.y / 2.f - 4}, Color::White, "LEVEL CLEAR");
+  Render::drawText({GameContext::WindowSize.x / 2 - 77 / 2, GameContext::WindowSize.y / 2 - 4}, Color::White, "LEVEL CLEAR");
 }
 
 } // namespace si
