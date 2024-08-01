@@ -98,14 +98,14 @@ void StateGame::draw() const
   Render::fillRect({0, GameContext::WindowSize.y - 12, GameContext::WindowSize.x, 12}, Color::Grey);
   Render::drawText({floor((GameContext::WindowSize.x - 189.f) / 2), 3}, Color::White,
       std::format("SCORE {:05}        LEVEL {:02}", m_score, m_level));
-  f32 xx;
-  for (int i = 0; i < m_rest; ++i)
+  f32 xx = 10;
+  Render::drawText({xx, GameContext::WindowSize.y - 10}, Color::White, std::format("{}", m_rest - 1));
+  for (int i = 0; i < m_rest - 1; ++i)
   {
     static Color transGreen(0x557d55ff);
-    xx = 6 + i * 16;
+    xx = 20 + i * 16;
     Render::sprite({xx, GameContext::WindowSize.y - 14}, transGreen, 25);
   }
-  Render::drawText({xx + 20, GameContext::WindowSize.y - 10}, Color::White, std::format("{}", m_rest));
 }
 
 void StateGame::clearLevel()
