@@ -45,9 +45,7 @@ void StateStart::draw() const
   Render::drawText({94, 82}, Color::White, "= 20 POINTS");
   Render::sprite({70, 92}, Color::Blue, 16);
   Render::drawText({94, 96}, Color::White, "= 10 POINTS");
-  Render::drawText({64, 118}, Color::White, "PRESS J TO START");
-  Render::drawText({67, 138}, Color::White, "A AND D TO MOVE");
-  Render::drawText({67, 148}, Color::White, "  J TO SHOOT   ");
+  Render::drawText({50, 118}, Color::White, "PRESS SPACE TO START");
   Render::drawText({28, 164}, Color::Yellow, "programmed by usama alshughry");
 }
 

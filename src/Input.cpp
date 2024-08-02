@@ -19,9 +19,9 @@ Key Input::m_keys[3];
 void Input::init()
 {
   Input::Keyboard = SDL_GetKeyboardState(nullptr);
-  m_keys[Key::Left].code = SDL_SCANCODE_A;
-  m_keys[Key::Right].code = SDL_SCANCODE_D;
-  m_keys[Key::Fire].code = SDL_SCANCODE_J;
+  m_keys[Key::Left].code = SDL_SCANCODE_LEFT;
+  m_keys[Key::Right].code = SDL_SCANCODE_RIGHT;
+  m_keys[Key::Fire].code = SDL_SCANCODE_SPACE;
 }
 
 void Input::updateInput()

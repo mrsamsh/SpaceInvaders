@@ -7,16 +7,15 @@ find_package(SDL2_image REQUIRED)
 find_package(SDL2_mixer REQUIRED)
 find_library(FOUNDATION Foundation REQUIRED)
 
-set(OSX_10_11_SDK_PATH /Users/usama/Downloads/MacOSX10.11.sdk)
-set(CMAKE_OSX_DEPLOYMENT_TARGET 10.11)
+# set(OSX_10_11_SDK_PATH /Users/usama/Downloads/MacOSX10.11.sdk)
+# set(CMAKE_OSX_DEPLOYMENT_TARGET 10.11)
+# set(CMAKE_OSX_ARCHITECTURES "x86_64")
 
 set(USE_OPENGL OFF CACHE BOOL "")
 set(USE_OPENGL_FX OFF CACHE BOOL "")
 
-set(CMAKE_OSX_ARCHITECTURES "x86_64")
 
 add_subdirectory(${CMAKE_SOURCE_DIR}/libs/Math)
-add_subdirectory(${CMAKE_SOURCE_DIR}/libs/SDL)
 
 if (USE_OPENGL)
   add_subdirectory(${CMAKE_SOURCE_DIR}/libs/glad)
@@ -70,7 +69,6 @@ set (Libraries
   SDL2_image
   SDL2_mixer
   math
-  fmt
   ${FOUNDATION}
 )
 
@@ -128,10 +126,10 @@ target_compile_features(SpaceInvaders
     cxx_std_20
 )
 
-target_compile_options(SpaceInvaders
-  PUBLIC
-    -mmacosx-version-min=10.9 -arch x86_64
-)
+# target_compile_options(SpaceInvaders
+#   PUBLIC
+#     -mmacosx-version-min=10.9 -arch x86_64
+# )
 
 add_custom_command(
   TARGET SpaceInvaders POST_BUILD

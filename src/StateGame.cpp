@@ -13,7 +13,7 @@
 #include "Render.hpp"
 #include "SoundPlayer.hpp"
 #include "GameContext.hpp"
-#include <fmt/core.h>
+#include <format>
 
 using math::vec2;
 
@@ -97,9 +97,9 @@ void StateGame::draw() const
   Render::fillRect({0, 0, GameContext::WindowSize.x, 12}, Color::Grey);
   Render::fillRect({0, GameContext::WindowSize.y - 12, GameContext::WindowSize.x, 12}, Color::Grey);
   Render::drawText({floor((GameContext::WindowSize.x - 189.f) / 2), 3}, Color::White,
-      fmt::format("SCORE {:05}        LEVEL {:02}", m_score, m_level));
+      std::format("SCORE {:05}        LEVEL {:02}", m_score, m_level));
   f32 xx = 10;
-  Render::drawText({xx, GameContext::WindowSize.y - 10}, Color::White, fmt::format("{}", m_rest - 1));
+  Render::drawText({xx, GameContext::WindowSize.y - 10}, Color::White, std::format("{}", m_rest - 1));
   for (int i = 0; i < m_rest - 1; ++i)
   {
     static Color transGreen(0x557d55ff);

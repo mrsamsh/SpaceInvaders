@@ -11,7 +11,7 @@
 #include "StateManager.hpp"
 #include "Input.hpp"
 #include "Render.hpp"
-#include <fmt/core.h>
+#include <format>
 
 namespace si
 {
@@ -38,7 +38,7 @@ void StateGameOver::draw() const
   if (GameContext::NewHighScore)
   {
     Render::drawText({(GameContext::WindowSize.x -105) / 2, 100}, Color::Red, "NEW HIGH SCORE!");
-    Render::drawText({(GameContext::WindowSize.x - 35) / 2, 112}, Color::Red, fmt::format("{:05}", GameContext::HighScore));
+    Render::drawText({(GameContext::WindowSize.x - 35) / 2, 112}, Color::Red, std::format("{:05}", GameContext::HighScore));
   }
 }
 

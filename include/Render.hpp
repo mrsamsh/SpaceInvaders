@@ -13,7 +13,7 @@
 #include "Color.hpp"
 
 #include <string_view>
-#include <fmt/core.h>
+#include <format>
 
 namespace si
 {
@@ -33,9 +33,9 @@ public:
   static void handleResize();
 
   template <typename ... Args>
-  static void drawText(math::vec2 pos, Color color, fmt::format_string<Args...> fmt, Args&& ... args)
+  static void drawText(math::vec2 pos, Color color, std::format_string<Args...> fmt, Args&& ... args)
   {
-    return drawText(pos, color, fmt::format(fmt, std::forward<Args>(args)...));
+    return drawText(pos, color, std::format(fmt, std::forward<Args>(args)...));
   }
 };
 

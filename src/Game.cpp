@@ -14,7 +14,7 @@
 #include "Clock.hpp"
 #include "Render.hpp"
 
-#include <fmt/core.h>
+#include <format>
 
 namespace si
 {
@@ -69,7 +69,7 @@ void Game::draw()
   m_stateManager.draw();
   if (m_renderFPS)
   {
-    Render::drawText({1, 20}, 0x00ff00aa, fmt::format("FPS:{}", frames));
+    Render::drawText({1, 20}, 0x00ff00aa, std::format("FPS:{}", frames));
   }
   Render::renderEnd();
 }
