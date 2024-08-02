@@ -244,13 +244,6 @@ bool Render::init(math::ivec2 windowSize, u32 scale)
   glDeleteShader(vs);
   glDeleteShader(fs);
 
-#ifdef USE_EFFECT
-  glUseProgram(program);
-  glUniform1i(glGetUniformLocation(program, "UseEffect"), true);
-  glUseProgram(rectProgram);
-  glUniform1i(glGetUniformLocation(rectProgram, "UseEffect"), true);
-#endif
-
   texture = loadTexture("Sprites.png");
 
   initDrawObjects();
@@ -314,6 +307,11 @@ void Render::sprite(math::vec2 pos, Color color, usz index)
 
 void Render::renderBegin()
 {
+  glUseProgram(program);
+  glUniform1i(glGetUniformLocation(program, "UseEffect"), GameContext::UseFx);
+  glUseProgram(rectProgram);
+  glUniform1i(glGetUniformLocation(rectProgram, "UseEffect"), GameContext::UseFx);
+
   glClearColor(clearColor.x, clearColor.y, clearColor.z, clearColor.w);
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }

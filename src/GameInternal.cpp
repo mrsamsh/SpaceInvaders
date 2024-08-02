@@ -61,6 +61,12 @@ void Game::handleEvents()
             if (event.key.repeat == 0)
               m_renderFPS = !m_renderFPS;
             break;
+          case SDLK_f:
+            if (event.key.repeat == 0)
+            {
+              GameContext::UseFx = !GameContext::UseFx;
+            }
+            break;
           default:
             break;
         }

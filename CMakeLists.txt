@@ -12,8 +12,6 @@ find_library(FOUNDATION Foundation REQUIRED)
 # set(CMAKE_OSX_ARCHITECTURES "x86_64")
 
 set(USE_OPENGL OFF CACHE BOOL "")
-set(USE_OPENGL_FX OFF CACHE BOOL "")
-
 
 add_subdirectory(${CMAKE_SOURCE_DIR}/libs/Math)
 
@@ -100,13 +98,6 @@ PROPERTIES
   MACOSX_BUNDLE_ICON_FILE       "icon.icns"
   MACOSX_BUNDLE   "TRUE"
 )
-
-if (USE_OPENGL AND USE_OPENGL_FX)
-  target_compile_definitions(SpaceInvaders
-    PRIVATE
-      USE_EFFECT
-    )
-endif()
 
 target_link_libraries(SpaceInvaders
   PRIVATE

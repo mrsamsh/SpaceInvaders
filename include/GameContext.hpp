@@ -21,6 +21,7 @@ struct GameContext
   static constexpr math::ivec2 WindowSize{240, 180};
   static u32 HighScore;
   static bool NewHighScore;
+  static bool UseFx;
 };
 
 } // namespace si
