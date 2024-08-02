@@ -15,6 +15,7 @@
 #include <array>
 #include <iostream>
 #include "GameContext.hpp"
+#include "ResourcePath.hpp"
 
 namespace si
 {
@@ -250,7 +251,7 @@ bool Render::init(math::ivec2 windowSize, u32 scale)
   glUniform1i(glGetUniformLocation(rectProgram, "UseEffect"), true);
 #endif
 
-  texture = loadTexture("resources/Sprites.png");
+  texture = loadTexture("Sprites.png");
 
   initDrawObjects();
 
@@ -563,7 +564,7 @@ GLuint loadTexture(std::string_view filename)
 {
   GLuint texture;
   int width, height, nrChannels;
-  unsigned char* file = stbi_load(filename.data(), &width, &height, &nrChannels, 0);
+  unsigned char* file = stbi_load((si::GetResourcePath(filename)), &width, &height, &nrChannels, 0);
   if (file == nullptr)
   {
     printf("Failed to load texture %s\n", filename.data());

@@ -9,6 +9,7 @@
 #include "Render.hpp"
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
+#include "ResourcePath.hpp"
 
 namespace si
 {
@@ -58,7 +59,7 @@ bool Render::init(math::ivec2 windowSize, u32 scale)
     return false;
 
   // load texture
-  SDL_Surface* surface = IMG_Load("resources/Sprites.png");
+  SDL_Surface* surface = IMG_Load(GetResourcePath("Sprites.png"));
   texture = SDL_CreateTextureFromSurface(renderer, surface);
   SDL_SetTextureBlendMode(texture, SDL_BLENDMODE_BLEND);
   SDL_FreeSurface(surface);
