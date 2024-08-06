@@ -11,7 +11,7 @@ find_library(FOUNDATION Foundation REQUIRED)
 # set(CMAKE_OSX_DEPLOYMENT_TARGET 10.11)
 # set(CMAKE_OSX_ARCHITECTURES "x86_64")
 
-set(USE_OPENGL OFF CACHE BOOL "")
+set(USE_OPENGL ON CACHE BOOL "")
 
 add_subdirectory(${CMAKE_SOURCE_DIR}/libs/Math)
 
