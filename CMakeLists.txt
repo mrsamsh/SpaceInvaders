@@ -15,29 +15,13 @@ set(USE_OPENGL ON CACHE BOOL "")
 
 add_subdirectory(${CMAKE_SOURCE_DIR}/libs/Math)
 
-if (USE_OPENGL)
-  add_subdirectory(${CMAKE_SOURCE_DIR}/libs/glad)
-  add_subdirectory(${CMAKE_SOURCE_DIR}/libs/stb)
-endif()
-
-# compile commands for clangd
-mark_as_advanced(CLEAR CMAKE_EXPORT_COMPILE_COMMANDS)
-set(CMAKE_EXPORT_COMPILE_COMMANDS ON CACHE BOOL "" FORCE)
-
-function(resource VAR SOURCE_PATH DESTINATION PATTERN)
-    file(GLOB_RECURSE _LIST CONFIGURE_DEPENDS ${SOURCE_PATH}/${PATTERN})
-    foreach (RESOURCE ${_LIST})
-        get_filename_component(_PARENT ${RESOURCE} DIRECTORY)
-        if (${_PARENT} STREQUAL ${SOURCE_PATH})
-            set(_DESTINATION ${DESTINATION})
-        else ()
-            file(RELATIVE_PATH _DESTINATION ${SOURCE_PATH} ${_PARENT})
-            set(_DESTINATION ${DESTINATION}/${_DESTINATION})
-        endif ()
-        set_property(SOURCE ${RESOURCE} PROPERTY MACOSX_PACKAGE_LOCATION ${_DESTINATION})
-    endforeach (RESOURCE)
-    set(${VAR} ${_LIST} PARENT_SCOPE)
-endfunction()
+set (Libraries 
+  SDL2::SDL2
+  SDL2_image
+  SDL2_mixer
+  math
+  ${FOUNDATION}
+)
 
 set(SourceFiles
   src/main.cpp
@@ -62,23 +46,33 @@ set(SourceFiles
   src/ResourcePath.mm
 )
 
-set (Libraries 
-  SDL2::SDL2
-  SDL2_image
-  SDL2_mixer
-  math
-  ${FOUNDATION}
-)
-
 if (USE_OPENGL)
+  add_subdirectory(${CMAKE_SOURCE_DIR}/libs/glad)
+  add_subdirectory(${CMAKE_SOURCE_DIR}/libs/stb)
   set (Libraries ${Libraries} glad stb_image)
-endif()
-
-if (USE_OPENGL)
   set (SourceFiles ${SourceFiles} src/RenderOpenGL.cpp)
 else()
   set (SourceFiles ${SourceFiles} src/Render.cpp)
 endif()
+
+# compile commands for clangd
+mark_as_advanced(CLEAR CMAKE_EXPORT_COMPILE_COMMANDS)
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON CACHE BOOL "" FORCE)
+
+function(resource VAR SOURCE_PATH DESTINATION PATTERN)
+    file(GLOB_RECURSE _LIST CONFIGURE_DEPENDS ${SOURCE_PATH}/${PATTERN})
+    foreach (RESOURCE ${_LIST})
+        get_filename_component(_PARENT ${RESOURCE} DIRECTORY)
+        if (${_PARENT} STREQUAL ${SOURCE_PATH})
+            set(_DESTINATION ${DESTINATION})
+        else ()
+            file(RELATIVE_PATH _DESTINATION ${SOURCE_PATH} ${_PARENT})
+            set(_DESTINATION ${DESTINATION}/${_DESTINATION})
+        endif ()
+        set_property(SOURCE ${RESOURCE} PROPERTY MACOSX_PACKAGE_LOCATION ${_DESTINATION})
+    endforeach (RESOURCE)
+    set(${VAR} ${_LIST} PARENT_SCOPE)
+endfunction()
 
 resource(ALL_RESOURCES ${CMAKE_CURRENT_SOURCE_DIR}/Resources Resources *)
 
