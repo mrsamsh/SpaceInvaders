@@ -63,7 +63,7 @@ bool Render::init(math::ivec2 windowSize, u32 scale)
     rawImage,
     w, h,
     sizeof(u8) * nc, sizeof(u8) * nc * w,
-    SDL_PIXELFORMAT_ABGR32
+    SDL_PIXELFORMAT_RGBA32
   );
   texture = SDL_CreateTextureFromSurface(renderer, surface);
   SDL_SetTextureBlendMode(texture, SDL_BLENDMODE_BLEND);
