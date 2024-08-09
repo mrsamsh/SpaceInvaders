@@ -3,7 +3,6 @@ cmake_minimum_required(VERSION 3.20)
 project(SpaceInvadors)
 
 find_package(SDL2 REQUIRED)
-find_package(SDL2_image REQUIRED)
 find_package(SDL2_mixer REQUIRED)
 find_library(FOUNDATION Foundation REQUIRED)
 
@@ -14,12 +13,14 @@ find_library(FOUNDATION Foundation REQUIRED)
 set(USE_OPENGL ON CACHE BOOL "")
 
 add_subdirectory(${CMAKE_SOURCE_DIR}/libs/Math)
+add_subdirectory(${CMAKE_SOURCE_DIR}/libs/stb)
 
 set (Libraries 
   SDL2::SDL2
   SDL2_image
   SDL2_mixer
   math
+  stb_image
   ${FOUNDATION}
 )
 
@@ -48,8 +49,7 @@ set(SourceFiles
 
 if (USE_OPENGL)
   add_subdirectory(${CMAKE_SOURCE_DIR}/libs/glad)
-  add_subdirectory(${CMAKE_SOURCE_DIR}/libs/stb)
-  set (Libraries ${Libraries} glad stb_image)
+  set (Libraries ${Libraries} glad)
   set (SourceFiles ${SourceFiles} src/RenderOpenGL.cpp)
 else()
   set (SourceFiles ${SourceFiles} src/Render.cpp)

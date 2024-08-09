@@ -8,8 +8,8 @@
 
 #include "Render.hpp"
 #include <SDL2/SDL.h>
-#include <SDL2/SDL_image.h>
 #include "ResourcePath.hpp"
+#include <stb/stb_image.h>
 
 namespace si
 {
@@ -53,17 +53,22 @@ bool Render::init(math::ivec2 windowSize, u32 scale)
       // | SDL_RENDERER_PRESENTVSYNC
   );
   SDL_SetRenderDrawBlendMode(renderer, SDL_BlendMode::SDL_BLENDMODE_BLEND);
-  if (IMG_Init(IMG_INIT_PNG) != IMG_INIT_PNG)
-    return false;
   if (window == nullptr || renderer == nullptr)
     return false;
 
   // load texture
-  SDL_Surface* surface = IMG_Load(GetResourcePath("Sprites.png"));
+  int w = 0, h = 0, nc = 0;
+  u8 * rawImage = stbi_load(GetResourcePath("Sprites.png"), &w, &h, &nc, 0);
+  SDL_Surface* surface = SDL_CreateRGBSurfaceWithFormatFrom(
+    rawImage,
+    w, h,
+    sizeof(u8) * nc, sizeof(u8) * nc * w,
+    SDL_PIXELFORMAT_ABGR32
+  );
   texture = SDL_CreateTextureFromSurface(renderer, surface);
   SDL_SetTextureBlendMode(texture, SDL_BLENDMODE_BLEND);
   SDL_FreeSurface(surface);
-  IMG_Quit();
+  stbi_image_free(rawImage);
 
   return true;
 }
