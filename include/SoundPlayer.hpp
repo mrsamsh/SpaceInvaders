@@ -10,7 +10,7 @@
 #define SOUNDPLAYER_HPP_
 
 #include "MyTypes.hpp"
-#include "Enum.hpp"
+#include "EnumWrapper.hpp"
 
 namespace si
 {
@@ -42,9 +42,9 @@ class SoundPlayer
 {
 public:
   static void init();
-  static void play(Enum<SoundEffect> effect, i32 repeat = 0);
-  static void setVolume(Enum<SoundChannel> channel, i32 volume);
-  static void stop(Enum<SoundChannel> channel);
+  static void play(EnumWrapper<SoundEffect> effect, i32 repeat = 0);
+  static void setVolume(EnumWrapper<SoundChannel> channel, i32 volume);
+  static void stop(EnumWrapper<SoundChannel> channel);
   static void quit();
 };
 
