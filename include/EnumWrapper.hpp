@@ -18,22 +18,20 @@ namespace enm
 {
 
 template <typename T>
-concept Enumurator = std::is_enum_v<T>;
+concept Enumerator = std::is_enum_v<T>;
 
 template <auto E>
-struct underlying;
-
-template <Enumurator Enum, Enum E>
-struct underlying<E>
+  requires Enumerator<decltype(E)>
+struct underlying
 {
-  using enum_type = Enum;
-  static constexpr std::underlying_type_t<Enum> value = static_cast<std::underlying_type_t<Enum>>(E);
+  using enum_type = decltype(E);
+  static constexpr std::underlying_type_t<enum_type> value = static_cast<std::underlying_type_t<enum_type>>(E);
 };
 
 template <auto E>
 inline constexpr auto underlying_v = underlying<E>::value;
 
-template <Enumurator Enum>
+template <Enumerator Enum>
 [[nodiscard]] static inline constexpr
 std::underlying_type_t<Enum> getUnderlying(Enum e)
 {
@@ -43,7 +41,7 @@ std::underlying_type_t<Enum> getUnderlying(Enum e)
 
 } // namespace enum
 
-template <enm::Enumurator T>
+template <enm::Enumerator T>
 class EnumWrapper
 {
 public:
