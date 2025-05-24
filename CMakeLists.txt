@@ -122,7 +122,6 @@ add_custom_command(
     ${CMAKE_COMMAND} -E create_symlink
       "${CMAKE_BINARY_DIR}/compile_commands.json"
       "${CMAKE_SOURCE_DIR}/compile_commands.json"
-  DEPENDS "${CMAKE_SOURCE_DIR}/compile_commands.json"
   COMMENT "Creating symlink for compile_commands"
 )
 
