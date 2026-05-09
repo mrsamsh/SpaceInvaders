@@ -32,6 +32,7 @@ void Game::run()
 
   m_running = init();
   f32 lastTime, thisTime, elapsed = 0, accumulator = 0, currentFrames = 0;
+  f32 const Delta = 1.f/60.f;
 
   Render::setClearColor(Color::Black);
 
@@ -40,12 +41,14 @@ void Game::run()
   while (m_running)
   {
     handleEvents();
-    update(elapsed);
+    update(Delta);
     draw();
     thisTime = Clock::Now();
     elapsed = thisTime - lastTime;
+    u32 delayTime = static_cast<u32>((Delta - elapsed) * 1000);
+    SDL_Delay(delayTime);
     lastTime = thisTime;
-    accumulator += elapsed;
+    accumulator += Delta;
     currentFrames++;
     if (accumulator >= 1.f)
     {
