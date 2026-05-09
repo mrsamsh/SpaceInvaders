@@ -54,9 +54,9 @@ void Game::handleEvents()
       case SDL_KEYDOWN:
         switch (event.key.keysym.sym)
         {
-          case SDLK_ESCAPE:
-            m_running = false;
-            break;
+          // case SDLK_ESCAPE:
+          //   m_running = false;
+          //   break;
           case SDLK_p:
             if (event.key.repeat == 0)
               m_renderFPS = !m_renderFPS;
@@ -65,6 +65,12 @@ void Game::handleEvents()
             if (event.key.repeat == 0)
             {
               GameContext::UseFx = !GameContext::UseFx;
+            }
+            break;
+          case SDLK_e:
+            if (event.key.repeat == 0)
+            {
+              GameContext::EasyMode = !GameContext::EasyMode;
             }
             break;
           default:

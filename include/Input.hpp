@@ -21,6 +21,8 @@ struct Key
     Left  = 0,
     Right,
     Fire,
+    Pause,
+    KEY_COUNT
   };
   SDL_Scancode code;
   bool lastTime, thisTime;
@@ -37,7 +39,7 @@ public:
   static bool isKeyJustReleased(Key::Code code);
   static void updateInput();
 private:
-  static Key m_keys[3];
+  static Key m_keys[Key::KEY_COUNT];
 };
 
 } // namespace si

@@ -14,7 +14,7 @@ namespace si
 {
 
 u8 const* Input::Keyboard = nullptr;
-Key Input::m_keys[3];
+Key Input::m_keys[Key::KEY_COUNT];
 
 void Input::init()
 {
@@ -22,11 +22,12 @@ void Input::init()
   m_keys[Key::Left].code = SDL_SCANCODE_LEFT;
   m_keys[Key::Right].code = SDL_SCANCODE_RIGHT;
   m_keys[Key::Fire].code = SDL_SCANCODE_SPACE;
+  m_keys[Key::Pause].code = SDL_SCANCODE_ESCAPE;
 }
 
 void Input::updateInput()
 {
-  for (int i = 0; i < 3; ++i)
+  for (int i = 0; i < Key::KEY_COUNT; ++i)
   {
     m_keys[i].lastTime = m_keys[i].thisTime;
     m_keys[i].thisTime = Keyboard[m_keys[i].code];

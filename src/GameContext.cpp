@@ -13,6 +13,7 @@ namespace si
 
 u32 GameContext::HighScore = 0;
 bool GameContext::NewHighScore = false;
-bool GameContext::UseFx = false;
+bool GameContext::UseFx = true;
+bool GameContext::EasyMode = false;
 
 } // namespace si

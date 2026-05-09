@@ -11,8 +11,10 @@
 #include "StateStart.hpp"
 #include "StateClear.hpp"
 #include "StateGameOver.hpp"
+#include "StateGamePause.hpp"
 #include "Clock.hpp"
 #include "Render.hpp"
+#include "GameContext.hpp"
 
 #include <format>
 
@@ -27,12 +29,12 @@ void Game::run()
   m_stateManager.registerState<StateGame>(StateID::Game);
   m_stateManager.registerState<StateGameOver>(StateID::GameOver);
   m_stateManager.registerState<StateClear>(StateID::Clear);
+  m_stateManager.registerState<StateGamePause>(StateID::Pause);
 
   m_stateManager.requestStateChange(StateChange::Push, StateID::Start);
 
   m_running = init();
   f32 lastTime, thisTime, elapsed = 0, accumulator = 0, currentFrames = 0;
-  f32 const Delta = 1.f/60.f;
 
   Render::setClearColor(Color::Black);
 
@@ -41,14 +43,14 @@ void Game::run()
   while (m_running)
   {
     handleEvents();
-    update(Delta);
+    update(GameContext::Delta);
     draw();
     thisTime = Clock::Now();
     elapsed = thisTime - lastTime;
-    u32 delayTime = static_cast<u32>((Delta - elapsed) * 1000);
+    u32 delayTime = static_cast<u32>((GameContext::Delta - elapsed) * 1000);
     SDL_Delay(delayTime);
     lastTime = thisTime;
-    accumulator += Delta;
+    accumulator += GameContext::Delta;
     currentFrames++;
     if (accumulator >= 1.f)
     {

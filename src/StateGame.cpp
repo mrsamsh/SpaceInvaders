@@ -21,7 +21,7 @@ namespace si
 {
 
 math::vec2 StateGame::PlayerSpawnPosition(GameContext::WindowSize.x / 2.f - 8, GameContext::WindowSize.y - 26);
-f32 StateGame::PlayerCooldownTime = 0.35f;
+f32 StateGame::PlayerCooldownTime = 0.7f;
 
 StateGame::StateGame(StateManager& manager)
 : State(manager, StateID::Game)
@@ -44,7 +44,7 @@ void StateGame::levelUp()
 
 void StateGame::setSoundSpeed()
 {
-  m_soundSpeed = std::log10((m_enemies.enemies.size() + 6) / 3);
+  m_soundSpeed = std::log10((m_enemies.enemies.size() * 3 + 4) / 3);
 }
 
 void StateGame::init()
@@ -81,6 +81,11 @@ bool StateGame::update(f32 const delta)
     m_scoreToRest += 1000;
   }
 
+  if (Input::isKeyJustPressed(Key::Pause))
+  {
+    m_manager.requestStateChange(StateChange::Push, StateID::Pause);
+  }
+
   return false;
 }
 void StateGame::draw() const
@@ -105,6 +110,10 @@ void StateGame::draw() const
     static Color transGreen(0x557d55ff);
     xx = 20 + i * 16;
     Render::sprite({xx, GameContext::WindowSize.y - 14}, transGreen, 25);
+  }
+  if (GameContext::EasyMode)
+  {
+    Render::fillRect({4,4,4,4}, Color::Yellow);
   }
 }
 
@@ -171,7 +180,7 @@ void StateGame::updateActors(f32 const delta)
     }
 
     auto const r = math::rng::generate<int>(0, 8);
-    if (r == 4 && m_enemies.cooldown > 0.35)
+    if (r == 4 && m_enemies.cooldown > 0.7)
     {
       m_enemies.cooldown = 0;
       m_enemies.shootBullet(m_bullets);
@@ -217,13 +226,21 @@ void StateGame::checkAndResolveCollision()
             b.getBoundingBox(), b2.getBoundingBox()
             ))
       {
-        if (b.type == Bullet::Type::Player)
+        if (GameContext::EasyMode)
         {
           b.alive = false;
-        }
-        if (b2.type == Bullet::Type::Player)
-        {
           b2.alive = false;
+        }
+        else
+        {
+          if (b.type == Bullet::Type::Player)
+          {
+            b.alive = false;
+          }
+          if (b2.type == Bullet::Type::Player)
+          {
+            b2.alive = false;
+          }
         }
         m_explosions.addExplosion(b.position, ExplosionType::Bullet);
       }

@@ -25,7 +25,7 @@ struct MysteryShip : public Entity
   math::Rect getBoundingBox() const;
   f32 timer = 0;
   bool alive = false;
-  static constexpr f32 speed = 100;
+  static constexpr f32 speed = 68;
 };
 
 } // namespace si

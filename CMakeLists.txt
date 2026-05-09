@@ -41,6 +41,7 @@ set(SourceFiles
   src/StateGame.cpp
   src/StateStart.cpp
   src/StateClear.cpp
+  src/StateGamePause.cpp
   src/StateGameOver.cpp
   src/Input.cpp
   src/SoundPlayer.cpp
