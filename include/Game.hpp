@@ -36,12 +36,14 @@ private:
   void handleResize();
 
   StateManager m_stateManager;
-  bool m_running;
+  // bool m_running;
   bool m_renderFPS = false;
   bool m_resized = false;
 
 private:
   static constexpr u32 Scale = 3;
+  static bool s_running;
+  friend class StateStart;
 };
 
 } // namespace si

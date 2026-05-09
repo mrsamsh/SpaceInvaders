@@ -22,6 +22,7 @@ namespace si
 {
 
 static u32 frames = 0;
+bool Game::s_running;
 
 void Game::run()
 {
@@ -33,14 +34,14 @@ void Game::run()
 
   m_stateManager.requestStateChange(StateChange::Push, StateID::Start);
 
-  m_running = init();
+  s_running = init();
   f32 lastTime, thisTime, elapsed = 0, accumulator = 0, currentFrames = 0;
 
   Render::setClearColor(Color::Black);
 
   lastTime = Clock::Now();
 
-  while (m_running)
+  while (s_running)
   {
     handleEvents();
     update(GameContext::Delta);

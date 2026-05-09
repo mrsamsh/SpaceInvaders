@@ -49,7 +49,7 @@ void Game::handleEvents()
         }
         break;
       case SDL_QUIT:
-        m_running = false;
+        s_running = false;
         break;
       case SDL_KEYDOWN:
         switch (event.key.keysym.sym)

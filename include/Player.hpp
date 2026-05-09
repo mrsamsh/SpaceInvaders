@@ -25,6 +25,7 @@ struct Player : public Entity
   math::Rect getBoundingBox() const;
   bool alive;
   f32 cooldown = 0.f;
+  static constexpr f32 Speed = 55.f;
 };
 
 } // namespace si

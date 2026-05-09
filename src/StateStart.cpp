@@ -10,11 +10,10 @@
 #include "Input.hpp"
 #include "Render.hpp"
 #include "StateManager.hpp"
-#include <iostream>
+#include "Game.hpp"
 
 namespace si
 {
-
 
 StateStart::StateStart(StateManager& manager)
 : State{manager, StateID::Start}
@@ -28,6 +27,10 @@ bool StateStart::update(f32 const delta)
   {
     m_manager.requestStateChange(StateChange::Pop);
     m_manager.requestStateChange(StateChange::Push, StateID::Game);
+  }
+  if (Input::isKeyJustPressed(Key::Pause))
+  {
+    Game::s_running = false;
   }
   return false;
 }

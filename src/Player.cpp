@@ -28,7 +28,7 @@ void Player::update(f32 const delta)
 {
   if (alive)
   {
-    position += velocity * 80.f * delta;
+    position += velocity * Speed * delta;
     position.x = math::clamp(position.x, 2.f, GameContext::WindowSize.x - 18.f);
   }
   else
