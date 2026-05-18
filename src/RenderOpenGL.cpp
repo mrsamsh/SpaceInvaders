@@ -13,7 +13,6 @@
 #include <stb/stb_image.h>
 #include <vector>
 #include <array>
-#include <iostream>
 #include "GameContext.hpp"
 #include "ResourcePath.hpp"
 
