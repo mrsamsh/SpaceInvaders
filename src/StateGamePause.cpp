@@ -29,7 +29,7 @@ bool StateGamePause::update(f32 const delta)
 
 void StateGamePause::draw() const
 {
-  Render::drawText({(GameContext::WindowSize.x - 63) / 2.f, 20.f}, Color::White, "~ PAUSE ~");
+  Render::drawText({(static_cast<f32>(GameContext::WindowSize.x - 62) / 2), 20}, Color::White, "~ PAUSE ~");
 }
 
 } // namespace si
