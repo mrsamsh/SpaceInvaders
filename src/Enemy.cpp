@@ -82,13 +82,13 @@ void EnemyFlock::spawn(math::vec2 position)
 void EnemyFlock::update(f32 const delta)
 {
   cooldown += delta;
-  static f32 accumulator = 0;
-  accumulator += delta;
-  if (accumulator < GameContext::Delta)
-  {
-    return;
-  }
-  accumulator = 0;
+  // static f32 accumulator = 0;
+  // accumulator += delta;
+  // if (accumulator < GameContext::Delta)
+  // {
+  //   return;
+  // }
+  // accumulator = 0;
   eraseDead();
   auto& e = enemies[current_update++];
   e.update(delta);
