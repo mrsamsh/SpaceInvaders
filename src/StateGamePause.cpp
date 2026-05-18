@@ -20,7 +20,7 @@ StateGamePause::StateGamePause(StateManager& manager)
 
 bool StateGamePause::update(f32 const delta)
 {
-  if (Input::isKeyJustPressed(Key::Pause))
+  if (Input::isKeyJustPressed(Key::Pause) || Input::isKeyJustReleased(Key::Fire))
   {
     m_manager.requestStateChange(StateChange::Pop);
   }
@@ -29,7 +29,7 @@ bool StateGamePause::update(f32 const delta)
 
 void StateGamePause::draw() const
 {
-  Render::drawText({(GameContext::WindowSize.x - 63) / 2, 20}, Color::White, "~ PAUSE ~");
+  Render::drawText({(GameContext::WindowSize.x - 63) / 2.f, 20.f}, Color::White, "~ PAUSE ~");
 }
 
 } // namespace si
