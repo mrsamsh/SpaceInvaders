@@ -17,7 +17,7 @@ namespace si
   const Color Color::Blue(0x4984b6ff);
   const Color Color::Yellow(0xffd300ff);
   const Color Color::White(0xffffffff);
-  const Color Color::Black(0x000000ff);
+  const Color Color::Black(0x090c0fff);
   const Color Color::Brown(0x9f4200ff);
   const Color Color::Grey(0x252222ff);
 

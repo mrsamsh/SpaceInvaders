@@ -21,10 +21,10 @@ struct Color
 
   [[nodiscard]] constexpr Color() : r(0xff), g(0xff), b(0xff), a(0xff) { }
   [[nodiscard]] constexpr Color(const u32 c)
-      : r((c >> 24))
+      : r((c >> 24)       )
       , g((c >> 16) & 0xff)
-      , b((c >> 8) & 0xff)
-      , a(c & 0xff)
+      , b((c >>  8) & 0xff)
+      , a((c      ) & 0xff)
   {
   }
   [[nodiscard]] constexpr Color(const u8 red, const u8 green, const u8 blue,
