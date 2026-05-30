@@ -95,7 +95,7 @@ void main()
     if (modval.y < PixelSide - 0.9 && modval.x < PixelSide - 0.9)
       FragColor = Color;
     else
-      discard;
+      FragColor = vec4(Color.xyz * (vec3(0.78, 0.78, 0.78) + 0.08 * Color.xyz), 1.0);
   }
   else
   {
@@ -203,7 +203,7 @@ bool Render::init(math::ivec2 windowSize, u32 scale)
       SDL_WINDOWPOS_CENTERED,
       windowSize.x * scale,
       windowSize.y * scale,
-      SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE
+      SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE | SDL_WINDOW_ALLOW_HIGHDPI
       );
 
   if (window == nullptr)
@@ -250,6 +250,8 @@ bool Render::init(math::ivec2 windowSize, u32 scale)
   spriteAttribs.reserve(MaxQuads);
   textAttribs.reserve(MaxQuads);
   rectAttribs.reserve(MaxQuads);
+
+  handleResize();
 
   return true;
 }
@@ -355,7 +357,7 @@ void Render::handleResize()
   int width, height;
   math::vec2 origSize = GameContext::WindowSize;
   float ratio = origSize.x / origSize.y;
-  SDL_GetWindowSize(window, &width, &height);
+  SDL_GetWindowSizeInPixels(window, &width, &height);
   int offsetx = 0, offsety = 0;
   float fwidth = float(width), fheight = float(height);
   if (fwidth / fheight < ratio)
