@@ -92,7 +92,7 @@ void main()
   {
     vec2 tt = gl_FragCoord.xy;
     vec2 modval = mod(tt, PixelSide);
-    if (modval.y < PixelSide - 0.9 && modval.x < PixelSide - 0.9)
+    if (modval.y < PixelSide - 0.95 && modval.x < PixelSide - 0.95)
       FragColor = Color;
     else
       FragColor = vec4(Color.xyz * (vec3(0.78, 0.78, 0.78) + 0.08 * Color.xyz), 1.0);
@@ -171,7 +171,7 @@ void main()
     vec2 tt = gl_FragCoord.xy;
     vec2 modval = mod(tt, PixelSide);
 
-    if (modval.y < PixelSide - 0.9 && modval.x < PixelSide - 0.9)
+    if (modval.y < PixelSide - 0.95 && modval.x < PixelSide - 0.95)
       FragColor = texture(SpritesTexture, TexCoords) * Color;
     else
       discard;
